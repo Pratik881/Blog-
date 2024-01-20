@@ -11,6 +11,10 @@ module.exports = (DataTypes, sequelize) => { // Function for model definition
       description: {
         type: DataTypes.TEXT,
         allowNull: false
+      },
+      imageUrl:{
+      type:DataTypes.STRING,
+      allowNull:false,
       }
     });
   

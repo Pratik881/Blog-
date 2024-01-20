@@ -1,5 +1,9 @@
 const express=require('express')
 const { blogs } = require('./model/index.js')
+const {multer,storage,filter}=require('./middleware/multerConfig.js')
+const upload=multer({storage:storage,
+                     fileFilter:filter
+})
 const app=express()
 app.set('view-engine','ejs')
 require('dotenv').config()
@@ -12,12 +16,14 @@ app.get('/',(req,res)=>{
 app.get('/addBlog',(req,res)=>{
     res.render('addBlog.ejs')
 })
-app.post('/addBlog',async (req,res)=>{
+app.post('/addBlog',upload.single('image') ,async (req,res)=>{
+    const {title,subtitle,description}=req.body
+   const imageUrl=req.file.filename;
     await blogs.create({
-    title:req.body.title,
-    subtitle:req.body.subtitle,
-    description:req.body.description
-
+    title,
+    subtitle,
+    description,
+    imageUrl,
    })
    res.send("successfull insertion")
 })
