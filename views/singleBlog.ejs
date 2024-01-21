@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Blogs</title>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/addBlog">Add Blog</a>
+  </nav>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    nav {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    article {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 16px;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+
+  <main>
+    <% if (blog){ %> 
+    <article>
+      <h2><%- blog.title%></h2>
+      <img src="<%- blog.imageUrl %>" alt="Blog Image">
+      <p><%- blog.subtitle %></p>
+      <p><%- blog.description%></p>
+      <button><a href='/delete/<%- blog.id %>'>Delete Me</a></button>
+        
+    </article>
+  <%  } %>
+    <!-- Add more articles as needed -->
+
+  </main>
+
+</body>
+</html>
