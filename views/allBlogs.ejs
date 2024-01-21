@@ -44,20 +44,15 @@
 <body>
 
   <main>
+    <% allBlogs.forEach((blog)=>{ %>
     <article>
-      <h2>First Blog Post</h2>
-      <img src="https://placekitten.com/800/400" alt="Blog Image">
-      <p><strong>Subtitle:</strong> Lorem ipsum dolor sit amet</p>
-      <p><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et urna vel justo bibendum tincidunt.</p>
+      <h2><%- blog.title%></h2>
+      <img src="<%- blog.imageUrl %>" alt="Blog Image">
+      <p><strong><%- blog.subtitle %>:</strong></p>
+      <p><%- blog.description%></p>
     </article>
-
-    <article>
-      <h2>Second Blog Post</h2>
-      <img src="https://placekitten.com/800/401" alt="Blog Image">
-      <p><strong>Subtitle:</strong> Curabitur euismod diam eu efficitur consequat</p>
-      <p><strong>Description:</strong> Curabitur euismod diam eu efficitur consequat. Integer id justo eu ex ullamcorper pellentesque.</p>
-    </article>
-
+ <% }) %>
+ 
     <!-- Add more articles as needed -->
 
   </main>
