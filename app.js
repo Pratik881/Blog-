@@ -47,7 +47,7 @@ app.get('/delete/:blogId',async(req,res)=>{
     const savedUrl=toDeleteImage.imageUrl
     const unusedUrlLength="http://localhost:3000/".length
     const requiredUrl=savedUrl.slice(unusedUrlLength)
-    console.log(requiredUrl)
+    // console.log(requiredUrl)
     const result=await blogs.destroy({
         where:{
             id:toDestroy
@@ -88,7 +88,6 @@ app.post('/edit/:blogId',upload.single('image'),async(req,res)=>{
    fileName=req.file.filename;//naya fileName ho yo
     }
 const {title,subtitle,description}=req.body;
-const imageUrl=fileName;
 //console.log(fileName)
 const blogId=req.params.blogId
 //old data
@@ -115,12 +114,11 @@ if(fileName!=selectedPart){
 // oldData.imageUrl="http://localhost:3000/"+imageUrl;
 // oldData.description=description;
 // await oldData.save() OR
-const imgagUrl="http://localhost:3000/"+fileName
 oldData.update({
     title,
     subtitle,
     description,
-    imageUrl
+    imageUrl:"http://localhost:3000/"+fileName
 },{
 where:{
     id:blogId
