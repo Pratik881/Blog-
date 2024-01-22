@@ -1,8 +1,9 @@
 const express=require('express')
-const { blogs } = require('./model/index.js')
+const { blogs,users } = require('./model/index.js')
 const {multer,storage,filter}=require('./middleware/multerConfig.js')
 const upload=multer({storage:storage})
 const app=express()
+const bcrypt=require('bcrypt')
 app.set('view-engine','ejs')
 require('dotenv').config()
 require('./model/index.js')
@@ -13,6 +14,20 @@ const fs=require('fs')
 app.get('/',async (req,res)=>{
     const allBlogs=await blogs.findAll()
     res.render('allBlogs.ejs',{allBlogs})
+})
+//user Registration form
+app.get('/register',(req,res)=>{
+    res.render('register.ejs')
+})
+//user registration
+app.post('/register',async(req,res)=>{
+const {userName,email,password}=req.body;
+await users.create({
+    userName,
+    password:bcrypt.hashSync(password,10),
+    email
+})
+//console.log(req.body)
 })
 //Single Blog
 // app.get('/deleteme',(req,res)=>{
