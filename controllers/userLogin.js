@@ -39,7 +39,7 @@ const oldData=await blogs.findOne({
     }
 })
 const oldFileName=oldData.imageUrl
-const unusedLength='https://blogged-g8ch.onrender.com/'.length
+const unusedLength=backend.length
 let selectedPart = oldFileName.slice(unusedLength)//pailako fileName ho yo
 if(fileName!=selectedPart){
     fs.unlink('./uploads/'+selectedPart,(err)=>{
@@ -60,7 +60,7 @@ oldData.update({
     title,
     subtitle,
     description,
-    imageUrl:'https://blogged-g8ch.onrender.com/'+fileName
+    imageUrl:backend+fileName
 },{
 where:{
     id:blogId
@@ -71,7 +71,7 @@ res.redirect('/')
 }
 const addBlog=async (req,res)=>{
     const {title,subtitle,description}=req.body
-   const imageUrl='https://blogged-g8ch.onrender.com/'+req.file.filename;
+   const imageUrl=backend+req.file.filename;
     await blogs.create({
     title,
     subtitle,
@@ -99,7 +99,7 @@ const deleteBlog=async(req,res)=>{
         }
     })
     const savedUrl=toDeleteImage.imageUrl
-    const unusedUrlLength='https://blogged-g8ch.onrender.com/'.length
+    const unusedUrlLength=backend.length
     const requiredUrl=savedUrl.slice(unusedUrlLength)
     // console.log(requiredUrl)
     const result=await blogs.destroy({
