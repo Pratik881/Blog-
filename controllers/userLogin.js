@@ -71,7 +71,7 @@ res.redirect('/')
 }
 const addBlog=async (req,res)=>{
     const {title,subtitle,description}=req.body
-   const imageUrl=BACKEND_URL + req.file.filename;
+   const imageUrl='https://blogged-g8ch.onrender.com/ '+ req.file.filename;
     await blogs.create({
     title,
     subtitle,
