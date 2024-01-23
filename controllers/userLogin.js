@@ -1,5 +1,6 @@
 const { users,blogs }=require('../model')
 require('dotenv').config()
+const backend=process.env.backend
 const fs=require('fs')
 const bcrypt=require('bcrypt')
 const userLogin= async (req, res) => {
