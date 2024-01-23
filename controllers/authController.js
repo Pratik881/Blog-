@@ -19,4 +19,11 @@ const userRegistration=async(req,res)=>{
         res.send("email already in use")
     }
     }
-module.exports={userRegistration}
+const registerPage=(req,res)=>{
+        res.render('register.ejs')
+    }
+const userLoginPage=(req,res)=>{
+    res.render('loginForm.ejs')
+}    
+   
+module.exports={userRegistration,registerPage,userLoginPage}

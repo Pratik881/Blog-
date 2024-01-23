@@ -70,17 +70,26 @@ where:{
 res.redirect('/')
 //
 }
-const addBlog=async (req,res)=>{
-    const {title,subtitle,description}=req.body
-   const imageUrl=backend+req.file.filename;
-    await blogs.create({
-    title,
-    subtitle,
-    description,
-    imageUrl,
-   })
-   res.redirect('/')
-}
+const addBlog = async (req, res) => {
+    try {
+        const { title, subtitle, description } = req.body;
+        const imageUrl = backend+req.file.filename;
+        console.log(req.file.filename)
+        
+        await blogs.create({
+            title,
+            subtitle,
+            description,
+            imageUrl,
+        });
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 const editForm=async (req,res)=>{
     const blogId= req.params.blogId
     //console.log(blogId)
