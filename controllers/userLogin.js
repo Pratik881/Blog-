@@ -1,4 +1,5 @@
 const { users,blogs }=require('../model')
+require('dotenv').config()
 const fs=require('fs')
 const bcrypt=require('bcrypt')
 const userLogin= async (req, res) => {
@@ -38,7 +39,7 @@ const oldData=await blogs.findOne({
     }
 })
 const oldFileName=oldData.imageUrl
-const unusedLength="http://localhost:3000/".length
+const unusedLength=BACKEND_URL.length
 let selectedPart = oldFileName.slice(unusedLength)//pailako fileName ho yo
 if(fileName!=selectedPart){
     fs.unlink('./uploads/'+selectedPart,(err)=>{
@@ -59,7 +60,7 @@ oldData.update({
     title,
     subtitle,
     description,
-    imageUrl:"http://localhost:3000/"+fileName
+    imageUrl:BACKEND_URL+fileName
 },{
 where:{
     id:blogId
@@ -70,7 +71,7 @@ res.redirect('/')
 }
 const addBlog=async (req,res)=>{
     const {title,subtitle,description}=req.body
-   const imageUrl="http://localhost:3000/" + req.file.filename;
+   const imageUrl=BACKEND_URL + req.file.filename;
     await blogs.create({
     title,
     subtitle,
@@ -98,7 +99,7 @@ const deleteBlog=async(req,res)=>{
         }
     })
     const savedUrl=toDeleteImage.imageUrl
-    const unusedUrlLength="http://localhost:3000/".length
+    const unusedUrlLength=BACKEND_URL.length
     const requiredUrl=savedUrl.slice(unusedUrlLength)
     // console.log(requiredUrl)
     const result=await blogs.destroy({
