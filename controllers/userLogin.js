@@ -3,6 +3,8 @@ require('dotenv').config()
 const backend=process.env.backend
 const fs=require('fs')
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
+require('dotenv').config
 const userLogin= async (req, res) => {
     const { email, password } = req.body;
 
@@ -18,6 +20,12 @@ const userLogin= async (req, res) => {
         if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).send("Invalid credentials");
         } else {
+            //Generate token here
+            const token=jwt.sign({id:user.id},process.env.SECRETKEY,{
+                expiresIn:'30d'
+            })
+           res.cookie('token',token)//browser ma cookieset garxa
+            console.log(token)
             res.status(200).send('Login successful');
         }
     } catch (error) {
