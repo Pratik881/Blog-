@@ -80,6 +80,8 @@ res.redirect('/')
 }
 const addBlog = async (req, res) => {
     try {
+        const userId=req.user.id
+       // console.log(userID)
         const { title, subtitle, description } = req.body;
         const imageUrl = backend+req.file.filename;
         console.log(req.file.filename)
@@ -89,6 +91,7 @@ const addBlog = async (req, res) => {
             subtitle,
             description,
             imageUrl,
+            userId
         });
 
         res.redirect('/');

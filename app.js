@@ -1,4 +1,5 @@
 const express=require('express')
+const cookieParser=require('cookie-parser')
 //const { blogs,users } = require('./model/index.js')
 // const {multer,storage}=require('./middleware/multerConfig.js')
 const allRoutes=require('./routes/blogRoute.js')
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended:true}))
 // const { userRegistration,registerPage, userLoginPage } = require('./controllers/authController.js')
 // //All blogs
 //app.get('/',showAll)
+app.use(cookieParser())
 app.use('/',allRoutes)
 app.use(express.static("uploads"))
 app.use(express.static("public"))
