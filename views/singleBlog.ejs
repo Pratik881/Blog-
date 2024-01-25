@@ -17,6 +17,8 @@
       <img src="<%- blog.imageUrl %>" alt="Blog Image">
       <p><%- blog.subtitle %></p>
       <p><%- blog.description%></p>
+      <p> Created At:<%- blog.createdAt.toISOString().slice(0,10) %></p>
+      <p>Author:<%- blog.user.userName %></p>
       <button><a href='/delete/<%- blog.id %>'>Delete Me</a></button>
       <button><a href='/edit/<%- blog.id %>'>Edit Me</a></button>
         

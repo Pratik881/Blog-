@@ -2,12 +2,14 @@
 const { multer, storage } = require('../middleware/multerConfig'); // Update the path accordingly
 
 const { renderAddBlog, addBlog, showAll, renderSingleBlog, deleteBlog, editForm, editBlog, userLogin } = require('../controllers/userLogin');
-const { registerPage, userRegistration, userLoginPage } = require('../controllers/authController');
+const { registerPage, userRegistration, userLoginPage, showMyBlogs } = require('../controllers/authController');
 const authenticateFunction = require('../middleware/isAuthenticated');
+const welcomePageAuthentication = require('../middleware/welcomePageAuthentication');
 const router = require('express').Router();
 
 const upload = multer({ storage: storage });
-router.route('/').get(showAll)
+router.route('/').get(welcomePageAuthentication,showAll)
+router.route('/myBlogs').get(authenticateFunction,showMyBlogs)
 router.route('/blogs/:blogId').get(renderSingleBlog)
 router.route('/delete/:blogId').get(authenticateFunction,deleteBlog)
 //edit garni form dekhauna

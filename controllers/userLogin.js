@@ -102,54 +102,95 @@ const addBlog = async (req, res) => {
 };
 
 const editForm=async (req,res)=>{
+    const id=req.user.id
     const blogId= req.params.blogId
-    //console.log(blogId)
+    console.log(blogId)
     const result= await blogs.findOne({
         where:{
-            id:blogId
-        }
-    })
-    res.render("Edit.ejs",{result})
+            id:blogId,
+            userId:id
 
-}
-const deleteBlog=async(req,res)=>{
-    const toDestroy=req.params.blogId;
-    const toDeleteImage=await blogs.findOne({
-        where:{
-            id:toDestroy
         }
     })
-    const savedUrl=toDeleteImage.imageUrl
-    const unusedUrlLength=backend.length
-    const requiredUrl=savedUrl.slice(unusedUrlLength)
-    // console.log(requiredUrl)
-    const result=await blogs.destroy({
-        where:{
-            id:toDestroy
-        }
-    })
-    if(result===1){
-        fs.unlink('./uploads/'+requiredUrl,(err)=>{
-            if(err){
-                console.log('error deleting image from the server')
-            }
-            else{
-                console.log('Image also succesffully deleted')
-            }
-        })
-        res.status(204).redirect('/')
+    //console.log(result)
+    //return
+    if(result){
+    res.render("Edit.ejs",{result})
     }
     else{
-        res.status(404).send("Blog not found")
+        res.redirect('/')
     }
-
 }
+const deleteBlog = async (req, res) => {
+    try {
+        const id = req.user.id;
+        const toDestroy = req.params.blogId;
+
+        const toDeleteBlog = await blogs.findOne({
+            where: {
+                id: toDestroy
+            }
+        });
+
+        if (!toDeleteBlog) {
+            return res.status(404).send("Blog not found");
+        }
+
+        const savedUrl = toDeleteBlog.imageUrl;
+        const unusedUrlLength = backend.length;
+        const requiredUrl = savedUrl.slice(unusedUrlLength);
+
+        const authorizedUser = await blogs.findOne({
+            where: {
+                userId: id,
+                id: toDestroy
+            }
+        });
+
+        if (authorizedUser) {
+            const result = await blogs.destroy({
+                where: {
+                    id: toDestroy
+                }
+            });
+
+            if (result === 1) {
+                fs.unlink('./uploads/' + requiredUrl, (err) => {
+                    if (err) {
+                        console.log('Error deleting image from the server:', err);
+                    } else {
+                        console.log('Image successfully deleted');
+                    }
+                });
+
+                res.redirect('/');
+            } else {
+                res.status(404).send("Blog not found");
+            }
+        } else {
+            res.status(403).send("You are not authorized to delete this");
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
 const renderAddBlog=(req,res)=>{
     res.render('addBlog.ejs')
 }
 const showAll=async (req,res)=>{
-    const allBlogs=await blogs.findAll()
-    res.render('allBlogs.ejs',{allBlogs})
+   const message=req.user.message;
+    
+    const allBlogs=await blogs.findAll({
+        include:{
+            model:users,
+            as: 'user' //by default sequelize retrieves associated data using singular version of the model name as the key in the result
+                      //table ko name users table ko primary key is the foreign key in the blogs table
+        } 
+    }
+    )
+    res.render('allBlogs.ejs',{allBlogs,message})
 }
 const renderSingleBlog=async (req,res)=>{
     const id=(req.params.blogId)
@@ -157,9 +198,12 @@ const renderSingleBlog=async (req,res)=>{
    const blog =await blogs.findOne({
     where:{
         id:id
+    },
+    include:{
+        model:users
     }
    })
-// const blog=await blogs.findByPk(id)
+   //console.log(blog)
    res.render("singleBlog.ejs",{blog})
 }
 module.exports={showAll,renderAddBlog,userLogin,editBlog,addBlog,editForm,deleteBlog,renderSingleBlog}

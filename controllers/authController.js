@@ -1,5 +1,5 @@
 const bcrypt=require('bcrypt')
-const {users}=require('../model')
+const {users,blogs}=require('../model')
 const userRegistration=async(req,res)=>{
     const {userName,email,password}=req.body;
     const previousEmail=await users.findOne({
@@ -25,5 +25,16 @@ const registerPage=(req,res)=>{
 const userLoginPage=(req,res)=>{
     res.render('loginForm.ejs')
 }    
+const showMyBlogs=async (req,res)=>{
+    const id=req.user.id;
+    console.log(id)
+    const allBlogs=await  blogs.findAll({
+        where:{
+            userId:id
+        }
+    })
+ 
+   res.render('myBlogs.ejs',{allBlogs})
+}
    
-module.exports={userRegistration,registerPage,userLoginPage}
+module.exports={showMyBlogs,userRegistration,registerPage,userLoginPage}

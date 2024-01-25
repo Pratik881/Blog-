@@ -1,14 +1,14 @@
 const jwt=require('jsonwebtoken')
 const util=require('util')
-const { users } = require('../model')
+const { users,blogs } = require('../model')
 
-  const authenticateFunction=async (req,res,next)=>{
+  const welcomePageAuthentication=async (req,res,next)=>{
     const token=req.cookies.token
-    console.log(token)
     //check if token exists or not
     if(!token){
-        console.log('I am the problem')
-        return res.render('allBlogs.ejs')
+        req.user={}
+        req.user.message='Welcome Stranger'
+        
     }
     else{
         //verify token
@@ -27,9 +27,11 @@ const { users } = require('../model')
        else{
         req.user={}
         req.user.id=decryptedResylt.id
+       req.user.userName=userExits.userName
+        req.user.message=`Welcome ${req.user.userName}`
 
        }
-        console.log(req.user.id) 
+    
     }
     catch(err){
         console.log(err)
@@ -38,4 +40,4 @@ const { users } = require('../model')
     next()
   }
 
-  module.exports=authenticateFunction
+  module.exports=welcomePageAuthentication
