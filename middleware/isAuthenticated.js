@@ -4,11 +4,12 @@ const { users } = require('../model')
 
   const authenticateFunction=async (req,res,next)=>{
     const token=req.cookies.token
-    console.log(token)
+    //console.log(token)
     //check if token exists or not
     if(!token){
-        console.log('I am the problem')
-        return res.render('allBlogs.ejs')
+        // console.log('I am the problem')
+        // return res.render('allBlogs.ejs')
+        return res.redirect('/')
     }
     else{
         //verify token
