@@ -1,5 +1,6 @@
 const bcrypt=require('bcrypt')
-const {users,blogs}=require('../model')
+const {users,blogs}=require('../model');
+const sendMail = require('../services/sendEmail');
 const userRegistration=async(req,res)=>{
     const {userName,email,password}=req.body;
     const previousEmail=await users.findOne({
@@ -36,5 +37,30 @@ const showMyBlogs=async (req,res)=>{
  
    res.render('myBlogs.ejs',{allBlogs})
 }
+const forgetMe=(req,res)=>{
+    res.render('forget.ejs')
+}
+const sendOTP=async (req,res)=>{
+    const emailFromBody=req.body.email
+    const emailExits=await users.findOne({
+        where:{
+        email:emailFromBody
+        }
+    })
+    if(emailExits){
+
+       await  sendMail({
+            email:emailFromBody,
+            subject:'forget password',
+            otp:1234
+        })
+        res.send('email sent successfully')
+        
+    }
+    else{
+        res.send('no such email found')
+    }
+
+}
    
-module.exports={showMyBlogs,userRegistration,registerPage,userLoginPage}
+module.exports={sendOTP,forgetMe,showMyBlogs,userRegistration,registerPage,userLoginPage}

@@ -2,7 +2,7 @@
 const { multer, storage } = require('../middleware/multerConfig'); // Update the path accordingly
 
 const { renderAddBlog, addBlog, showAll, renderSingleBlog, deleteBlog, editForm, editBlog, userLogin, logOut } = require('../controllers/userLogin');
-const { registerPage, userRegistration, userLoginPage, showMyBlogs } = require('../controllers/authController');
+const { registerPage, userRegistration, userLoginPage, showMyBlogs, forgetMe, sendOTP } = require('../controllers/authController');
 const authenticateFunction = require('../middleware/isAuthenticated');
 const welcomePageAuthentication = require('../middleware/welcomePageAuthentication');
 const router = require('express').Router();
@@ -23,4 +23,5 @@ router.route('/login').get(userLoginPage)
 //user login post request
 router.route('/login').post(userLogin);
 router.route('/logout').get(logOut)
+router.route('/forgetPassword').get(forgetMe).post(sendOTP)
 module.exports = router;
