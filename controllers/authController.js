@@ -27,7 +27,7 @@ const userLoginPage=(req,res)=>{
 }    
 const showMyBlogs=async (req,res)=>{
     const id=req.user.id;
-    console.log(id)
+    //console.log(id)
     const allBlogs=await  blogs.findAll({
         where:{
             userId:id
