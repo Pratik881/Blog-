@@ -153,6 +153,7 @@ const deleteBlog = async (req, res) => {
                     id: toDestroy
                 }
             });
+            console.log(authorizedUser)
 
             if (result === 1) {
                 fs.unlink('./uploads/' + requiredUrl, (err) => {

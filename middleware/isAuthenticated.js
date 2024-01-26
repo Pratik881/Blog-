@@ -7,9 +7,10 @@ const { users } = require('../model')
     //console.log(token)
     //check if token exists or not
     if(!token){
-        // console.log('I am the problem')
-        // return res.render('allBlogs.ejs')
         return res.redirect('/')
+    
+         //return res.render('allBlogs.ejs')
+        //return res.redirect('/')
     }
     else{
         //verify token
@@ -28,9 +29,10 @@ const { users } = require('../model')
        else{
         req.user={}
         req.user.id=decryptedResylt.id
-
+        req.user.userName=userExits.userName
+        req.user.message=`Welcome ${req.user.userName}`
        }
-        console.log(req.user.id) 
+        //console.log(req.user.id) 
     }
     catch(err){
         console.log(err)
