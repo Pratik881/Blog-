@@ -16,6 +16,10 @@ app.use(express.urlencoded({extended:true}))
 // //All blogs
 //app.get('/',showAll)
 app.use(cookieParser())
+app.use((req,res,next)=>{
+    res.locals.currentUser=req.cookies.token
+    next()  
+})
 app.use('/',allRoutes)
 app.use(express.static("uploads"))
 app.use(express.static("public"))

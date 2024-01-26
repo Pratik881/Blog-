@@ -207,4 +207,8 @@ const renderSingleBlog=async (req,res)=>{
    //console.log(blog)
    res.render("singleBlog.ejs",{blog})
 }
-module.exports={showAll,renderAddBlog,userLogin,editBlog,addBlog,editForm,deleteBlog,renderSingleBlog}
+const logOut=async(req,res)=>{
+    res.clearCookie('token')
+    res.redirect('/')
+}
+module.exports={logOut,showAll,renderAddBlog,userLogin,editBlog,addBlog,editForm,deleteBlog,renderSingleBlog}

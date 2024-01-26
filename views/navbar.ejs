@@ -1,7 +1,14 @@
 <nav>
+  <% if (currentUser){ %>
     <a href="/">Home</a>
     <a href="/addBlog">AddBlog</a>
+  
+     <a href="/logout">Logout</a>
+    <a href="/myBlogs">My Blogs</a>
+    <%} else { %>
+      <a href="/">Home</a>
+    <!-- <a href="/addBlog">AddBlog</a> -->
     <a href="/register">Register</a>
     <a href="/login">Login</a>
-    <a href="/myBlogs">My Blogs</a>
+     <%} %>
   </nav>
