@@ -6,7 +6,8 @@ const { users } = require('../model')
     const token=req.cookies.token
     //console.log(token)
     //check if token exists or not
-    if(!token){
+    if(!token ){
+        
         return res.redirect('/')
     
          //return res.render('allBlogs.ejs')

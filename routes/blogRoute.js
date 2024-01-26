@@ -14,7 +14,7 @@ router.route('/blogs/:blogId').get(renderSingleBlog)
 router.route('/delete/:blogId').get(authenticateFunction,deleteBlog)
 //edit garni form dekhauna
 router.route('/edit/:blogId').get(authenticateFunction,editForm).post(upload.single('image'),editBlog)
-router.route('/addBlog').get(authenticateFunction,renderAddBlog).post(upload.single('image'), addBlog);
+router.route('/addBlog').get(authenticateFunction,renderAddBlog).post(upload.single('image'),authenticateFunction, addBlog);
 router.route('/register').get(registerPage).post(userRegistration)
 //user registration
 //router.route('/register').post(userRegistration)

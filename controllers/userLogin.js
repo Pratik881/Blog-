@@ -81,7 +81,6 @@ res.redirect('/')
 const addBlog = async (req, res) => {
     try {
         const userId=req.user.id
-       // console.log(userID)
         const { title, subtitle, description } = req.body;
         const imageUrl = backend+req.file.filename;
         console.log(req.file.filename)
@@ -208,7 +207,8 @@ const renderSingleBlog=async (req,res)=>{
    res.render("singleBlog.ejs",{blog})
 }
 const logOut=async(req,res)=>{
-    res.clearCookie('token')
+    //res.clearCookie('token')
+    res.cookie('token','',{expires:new Date(1)})
     res.redirect('/')
 }
 module.exports={logOut,showAll,renderAddBlog,userLogin,editBlog,addBlog,editForm,deleteBlog,renderSingleBlog}
