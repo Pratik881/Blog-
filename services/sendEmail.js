@@ -7,11 +7,11 @@ const sendMail=async(options)=>{
             pass:process.env.Pass
         }
     })
-    const mailOptions={//
+    const mailOptions={
         from:'pratik',
         to:options.email,
         subject:options.subject,
-        text:'Your otp is'+options.otp, 
+        text:'Your otp is '+ options.otp, 
 
     }
     const sent= await transporter.sendMail(mailOptions)

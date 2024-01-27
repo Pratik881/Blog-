@@ -49,18 +49,55 @@ const sendOTP=async (req,res)=>{
     })
     if(emailExits){
 
+      const randomOtp=Math.floor(Math.random()*10000)
        await  sendMail({
             email:emailFromBody,
             subject:'forget password',
-            otp:1234
+            otp:randomOtp
         })
-        res.send('email sent successfully')
-        
+        emailExits.otp=randomOtp
+        emailExits.otpGeneratedTime=Date.now()
+        await emailExits.save()
+       res.redirect('/otp?email='+emailFromBody)//urlma query banera janxa email=nnn@gmail.com
     }
     else{
         res.send('no such email found')
     }
 
 }
+const otpForm=(req,res)=>{
+    const email=req.query.email
+    console.log(email)
+    res.render('otpForm.ejs')
+}
+const verifyOTP=async(req,res)=>{
+    const otpFromForm=req.body.otp;
+    const email=req.query.email
+    console.log(email)
+    return
+    const actualUserOtp=await users.findOne({
+        where:{
+            otp:otpFromForm
+        }
+    })
+    //check if otp has expired or not
+    const otpExpirationCheck=Date.now()-actualUserOtp.otpGeneratedTime
+    if(otpExpirationCheck>120000){
+        console.log('otp has expired')
+    }
+    else{
+        console.log('otp is still valid')
+    }
+    return
+    if(actualUserOtp){
+        console.log('Yes')
+    }
+    else{
+        console.log('otp doesnt match')
+    }
+    // const otpExpirationTime=Date.now()
+    // console.log(otpFromForm)
+
+}
    
-module.exports={sendOTP,forgetMe,showMyBlogs,userRegistration,registerPage,userLoginPage}
+module.exports={verifyOTP,otpForm,sendOTP,forgetMe,showMyBlogs,userRegistration,registerPage,userLoginPage}
