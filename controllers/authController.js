@@ -68,21 +68,27 @@ const sendOTP=async (req,res)=>{
 const otpForm=(req,res)=>{
     const email=req.query.email
     console.log(email)
-    res.render('otpForm.ejs')
+    res.render('otpForm.ejs',{email})
 }
 const verifyOTP=async(req,res)=>{
     const otpFromForm=req.body.otp;
-    const email=req.query.email
-    console.log(email)
-    return
+    const email=req.params.email
+    if(!otpFromForm)
+    {
+        console.log('please enter otp')
+    }
     const actualUserOtp=await users.findOne({
         where:{
+            email,
             otp:otpFromForm
         }
     })
+    if(!actualUserOtp){
+        res.send('Invalid Otp')
+    }
     //check if otp has expired or not
     const otpExpirationCheck=Date.now()-actualUserOtp.otpGeneratedTime
-    if(otpExpirationCheck>120000){
+    if(otpExpirationCheck>=120000){
         console.log('otp has expired')
     }
     else{

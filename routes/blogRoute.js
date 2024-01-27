@@ -25,5 +25,5 @@ router.route('/login').post(userLogin);
 router.route('/logout').get(logOut)
 router.route('/forgetPassword').get(forgetMe).post(sendOTP)
 router.route('/otp').get(otpForm)
-router.route('/otp').post(verifyOTP)
+router.route('/otp/:email').post(verifyOTP)
 module.exports = router;

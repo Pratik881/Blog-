@@ -73,8 +73,8 @@ button:hover {
   </style>
 </head>
 <body>
-
-  <form action="/otp" method="post">
+  <h1>OTP verification for <%- email %></h1>
+  <form action="/otp/<%- email %>" method="post">
     <label for="otp">Enter your OTP here</label>
     <input type="text" id="otp" name="otp"  required>
     <button type="submit">Verify OTP</button>
