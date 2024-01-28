@@ -87,23 +87,44 @@ const verifyOTP=async(req,res)=>{
         res.send('Invalid Otp')
     }
     //check if otp has expired or not
+    else{
     const otpExpirationCheck=Date.now()-actualUserOtp.otpGeneratedTime
-    if(otpExpirationCheck>=120000){
-        console.log('otp has expired')
-    }
-    else{
-        console.log('otp is still valid')
-    }
-    return
-    if(actualUserOtp){
-        console.log('Yes')
-    }
-    else{
-        console.log('otp doesnt match')
-    }
-    // const otpExpirationTime=Date.now()
-    // console.log(otpFromForm)
+    if(otpExpirationCheck>=120000000){
 
+       res.send('Opt expired')
+    }
+    else{
+        actualUserOtp.otp=null,
+        actualUserOtp.otpGeneratedTime=null
+        await actualUserOtp.save()
+        res.redirect('/passwordChange?email='+email)
+    }
 }
    
-module.exports={verifyOTP,otpForm,sendOTP,forgetMe,showMyBlogs,userRegistration,registerPage,userLoginPage}
+
+}
+const passwordChangeForm=(req,res)=>{
+    const email=req.query.email
+    console.log(email)
+    res.render('passwordChange.ejs',{email})
+}
+const afterPasswordChange=async (req,res)=>{
+    const email=req.params.email;
+    let newPassword=req.body.password
+    const userExists=await users.findOne({
+        where:{
+            email
+        }
+    })
+    if(userExists){
+         newPassword=bcrypt.hashSync(newPassword,10),
+          userExists.password=newPassword;
+          await userExists.save()
+          res.redirect('/login')
+    }
+    else{
+        res.render('No such email exists')
+    }
+}
+   
+module.exports={afterPasswordChange,passwordChangeForm,verifyOTP,otpForm,sendOTP,forgetMe,showMyBlogs,userRegistration,registerPage,userLoginPage}

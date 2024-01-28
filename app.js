@@ -18,6 +18,8 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use((req,res,next)=>{
     res.locals.currentUser=req.cookies.token
+    // const verifyToken=util.promisify(jwt.verify)
+    // const decryptedResylt=await verifyToken(token,process.env.SECRETKEY)
     next()  
 })
 app.use('/',allRoutes)
