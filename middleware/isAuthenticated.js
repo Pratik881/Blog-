@@ -7,9 +7,7 @@ const { users } = require('../model')
     //console.log(token)
     //check if token exists or not
     if(!token ){
-        
         return res.redirect('/')
-    
          //return res.render('allBlogs.ejs')
         //return res.redirect('/')
     }
