@@ -27,5 +27,5 @@ router.route('/forgetPassword').get(forgetMe).post(sendOTP)
 router.route('/otp').get(otpForm)
 router.route('/otp/:email').post(verifyOTP)
 router.route('/passwordChange').get(passwordChangeForm)
-router.route('/passwordChange/:email').post(afterPasswordChange)
+router.route('/passwordChange/:email/:otp').post(afterPasswordChange)
 module.exports = router;
