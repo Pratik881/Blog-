@@ -94,10 +94,10 @@ const verifyOTP=async(req,res)=>{
        res.send('Opt expired')
     }
     else{
-        actualUserOtp.otp=null,
-        actualUserOtp.otpGeneratedTime=null
-        await actualUserOtp.save()
-        res.redirect('/passwordChange?email='+email)
+        // actualUserOtp.otp=null,
+        // actualUserOtp.otpGeneratedTime=null
+        // await actualUserOtp.save()
+        res.redirect('/passwordChange?email='+email+'?otp='+otpFromForm)
     }
 }
    
@@ -105,18 +105,30 @@ const verifyOTP=async(req,res)=>{
 }
 const passwordChangeForm=(req,res)=>{
     const email=req.query.email
-    console.log(email)
-    res.render('passwordChange.ejs',{email})
+    const otp=req.query.otp
+    if(!email || !otp){
+        return res.send('email and otp must be provided in query')
+    }
+    res.render('passwordChange.ejs',{email,otp})
 }
 const afterPasswordChange=async (req,res)=>{
     const email=req.params.email;
+    const otp=req.params.otp
     let newPassword=req.body.password
+    
     const userExists=await users.findOne({
         where:{
-            email
+            email,
+            otp
         }
     })
+
     if(userExists){
+        const otpExpirationCheck=Date.now()-actualUserOtp.otpGeneratedTime
+       if(otpExpirationCheck>=240000000){
+
+       return res.redirect('/passwordChange?email='+email+'?otp='+otpFromForm)
+    }
          newPassword=bcrypt.hashSync(newPassword,10),
           userExists.password=newPassword;
           await userExists.save()
