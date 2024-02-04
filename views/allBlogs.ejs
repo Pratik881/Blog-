@@ -6,6 +6,11 @@
   <link rel="stylesheet" href="/styles/allStyles.css">
   <title>All Blogs</title>
   <script>
+    setTimeout(()=>{
+      const element=document.getElementById('me')
+      element.style.display='none'
+
+    },3000)
     function redirectTo(blogId){
       var url='/blogs/'+blogId;
       window.location.href=url;
@@ -15,6 +20,7 @@
 </head>
 <body>
   <h1><%-message %></h1>
+  <p id="me"><%-success %></p>
   <main>
     <% allBlogs.forEach((blog)=>{ %>
     <article>

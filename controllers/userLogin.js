@@ -18,7 +18,8 @@ const userLogin= async (req, res) => {
 
         // Check if the user exists and the password is correct
         if (!user || !bcrypt.compareSync(password, user.password)) {
-            return res.status(401).send("Invalid credentials");
+            req.flash('error','Invalid credentials')
+            res.redirect('/login')
         } else {
             //Generate token here
             const token=jwt.sign({id:user.id},process.env.SECRETKEY,{
@@ -26,7 +27,8 @@ const userLogin= async (req, res) => {
             })
            res.cookie('token',token)//browser ma cookieset garxa
             console.log(token)
-            res.status(200).send('Login successful');
+            req.flash('success','Login success')
+            res.redirect('/')
         }
     } catch (error) {
         console.error(error);
@@ -181,6 +183,7 @@ const renderAddBlog=(req,res)=>{
 }
 const showAll=async (req,res)=>{
    const message=req.user.message;
+   const success=req.flash('success')
     
     const allBlogs=await blogs.findAll({
         include:{
@@ -190,7 +193,7 @@ const showAll=async (req,res)=>{
         } 
     }
     )
-    res.render('allBlogs.ejs',{allBlogs,message})
+    res.render('allBlogs.ejs',{allBlogs,message,success})
 }
 const renderSingleBlog=async (req,res)=>{
     const id=(req.params.blogId)

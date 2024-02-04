@@ -24,7 +24,8 @@ const registerPage=(req,res)=>{
         res.render('register.ejs')
     }
 const userLoginPage=(req,res)=>{
-    res.render('loginForm.ejs')
+   const error= req.flash('error')
+    res.render('loginForm.ejs',{error})
 }    
 const showMyBlogs=async (req,res)=>{
     const id=req.user.id;
