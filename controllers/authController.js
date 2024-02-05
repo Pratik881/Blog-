@@ -9,7 +9,7 @@ const userRegistration=async(req,res)=>{
         }
     })
     if(!previousEmail){
-    await users.create({
+    await users.creates({
         userName,
         password:bcrypt.hashSync(password,10),
         email
@@ -21,7 +21,8 @@ const userRegistration=async(req,res)=>{
     }
     }
 const registerPage=(req,res)=>{
-        res.render('register.ejs')
+       const error=req.flash('error')
+        res.render('register.ejs',{error})
     }
 const userLoginPage=(req,res)=>{
    const error= req.flash('error')

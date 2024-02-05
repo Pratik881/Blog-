@@ -4,6 +4,7 @@ const backend=process.env.backend
 const fs=require('fs')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const session=require('express-session')
 require('dotenv').config
 const userLogin= async (req, res) => {
     const { email, password } = req.body;
@@ -182,8 +183,10 @@ const renderAddBlog=(req,res)=>{
     res.render('addBlog.ejs')
 }
 const showAll=async (req,res)=>{
+    try{
    const message=req.user.message;
    const success=req.flash('success')
+   console.log(req.session)
     
     const allBlogs=await blogs.findAll({
         include:{
@@ -194,6 +197,10 @@ const showAll=async (req,res)=>{
     }
     )
     res.render('allBlogs.ejs',{allBlogs,message,success})
+}
+catch(error){
+    res.send(error.stack)
+}
 }
 const renderSingleBlog=async (req,res)=>{
     const id=(req.params.blogId)
