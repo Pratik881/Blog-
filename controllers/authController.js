@@ -72,6 +72,7 @@ const otpForm=(req,res)=>{
     console.log(email)
     res.render('otpForm.ejs',{email})
 }
+//hi
 const verifyOTP=async(req,res)=>{
     const otpFromForm=req.body.otp;
     const email=req.params.email
