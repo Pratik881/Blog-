@@ -9,7 +9,7 @@ const userRegistration=async(req,res)=>{
         }
     })
     if(!previousEmail){
-    await users.creates({
+    await users.create({
         userName,
         password:bcrypt.hashSync(password,10),
         email
